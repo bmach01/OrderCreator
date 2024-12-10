@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrderCreator.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace OrderCreator.Model
         public string Name { get; set; }
         public DateTime Created { get; }
         public List<OrderItem> Items { get; private set; }
+        public List<ISpecialOffer> AppliedDiscounts { get; private set; }
         public double Sum { get; private set; }
 
         public Order() 
@@ -20,6 +22,7 @@ namespace OrderCreator.Model
             Created = DateTime.Now;
             Name = "Order_" + Id.ToString();
             Items = new List<OrderItem> { };
+            AppliedDiscounts= new List<ISpecialOffer>();
             Sum = 0;
         }
 
@@ -28,31 +31,37 @@ namespace OrderCreator.Model
             Name = name;
         }
 
-        public Order(Guid id, string name, DateTime created, List<OrderItem> items, double sum)
+        public Order(Guid id, string name, DateTime created, List<OrderItem> items, List<ISpecialOffer> appliedDiscounts, double sum)
         {
             Id = id;
             Name = name;
             Created = created;
             Items = items;
+            AppliedDiscounts = appliedDiscounts;
             Sum = sum;
         }
 
-        public void addItem(OrderItem item)
+        public void AddItem(OrderItem item)
         {
             Items.Add(item);
             Sum += item.Price;
         }
 
-        public void removeItem(OrderItem item)
+        public void RemoveItem(OrderItem item)
         {
             if (Items.Remove(item))
                 Sum -= item.Price;
         }
 
-        public void removeItem(int index)
+        public void RemoveItem(int index)
         {
             Sum -= Items[index].Price;
             Items.RemoveAt(index);
+        }
+
+        public void ApplyDiscount(Func<Order, double> discount)
+        {
+            Sum = discount(this);
         }
 
     }
