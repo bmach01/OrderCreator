@@ -1,28 +1,24 @@
 ﻿using OrderCreator.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace OrderCreator.Model
 {
     internal class Order
     {
         public Guid Id { get; }
-        public string Name { get; set; }
-        public DateTime Created { get; }
-        public List<Product> Items { get; private set; }
+        public string Name { get; }
+        public DateTime Created { get; private set; }
+        public List<Product> Items { get; private set; } // Map should also be considered, especially for large orders
         public List<ISpecialOffer> AppliedDiscounts { get; private set; }
         public double Sum { get; private set; }
 
-        public Order() 
+        public Order()
         {
             Id = Guid.NewGuid();
             Created = DateTime.Now;
             Name = "Order_" + Id.ToString();
             Items = new List<Product> { };
-            AppliedDiscounts= new List<ISpecialOffer>();
+            AppliedDiscounts = new List<ISpecialOffer>();
             Sum = 0;
         }
 
@@ -31,6 +27,7 @@ namespace OrderCreator.Model
             Name = name;
         }
 
+        [JsonConstructor]
         public Order(Guid id, string name, DateTime created, List<Product> items, List<ISpecialOffer> appliedDiscounts, double sum)
         {
             Id = id;
@@ -62,6 +59,16 @@ namespace OrderCreator.Model
         public void ApplyDiscount(Func<Order, double> discount)
         {
             Sum = discount(this);
+        }
+
+        public bool HasItem(Product item)
+        {
+            return Items.Contains(item);
+        }
+
+        public void SetNewSavedDate()
+        {
+            Created = DateTime.Now;
         }
 
     }

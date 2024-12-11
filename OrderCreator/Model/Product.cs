@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace OrderCreator.Model
 {
@@ -19,6 +15,7 @@ namespace OrderCreator.Model
             Price = price;
         }
 
+        [JsonConstructor]
         public Product(Guid id, string name, double price)
         {
             Id = id;

@@ -1,9 +1,4 @@
 ﻿using OrderCreator.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderCreator.Service
 {
@@ -11,7 +6,7 @@ namespace OrderCreator.Service
     {
         private LinkedList<ISpecialOffer> _specialOffers;
 
-        public SpecialOfferService() 
+        public SpecialOfferService()
         {
             _specialOffers = new LinkedList<ISpecialOffer>();
         }
@@ -21,20 +16,20 @@ namespace OrderCreator.Service
             _specialOffers = specialOffers;
         }
 
-        public void AddSpecialOffer(ISpecialOffer specialOffer, ISpecialOffer before) 
+        public void AddSpecialOffer(ISpecialOffer specialOffer, ISpecialOffer before)
         {
             // Order matters
             var node = _specialOffers.Find(before);
             _specialOffers.AddBefore(node, specialOffer);
-           
+
         }
 
-        public void AppendSpecialOfffer(ISpecialOffer specialOffer) 
+        public void AppendSpecialOfffer(ISpecialOffer specialOffer)
         {
             _specialOffers.AddLast(specialOffer);
         }
 
-        public void RemoveSpecialOffer(ISpecialOffer specialOffer) 
+        public void RemoveSpecialOffer(ISpecialOffer specialOffer)
         {
             _specialOffers.Remove(specialOffer);
         }

@@ -1,11 +1,6 @@
 ﻿using OrderCreator.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace OrderCreator.DAL
 {
@@ -15,7 +10,7 @@ namespace OrderCreator.DAL
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OrderCreatorDBProp.txt"
         );
 
-        public OrderRepository() 
+        public OrderRepository()
         {
             if (!File.Exists(_dbPath))
             {

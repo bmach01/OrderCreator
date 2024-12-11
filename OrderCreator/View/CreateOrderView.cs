@@ -1,12 +1,6 @@
 ﻿using OrderCreator.Model;
 using OrderCreator.Service;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderCreator.View
 {
@@ -38,7 +32,7 @@ namespace OrderCreator.View
             else
                 newOrder = new Order();
 
-            Console.WriteLine("To add items to your list type number of the desired item.");
+            Console.WriteLine("\nTo add items to your list type number of the desired item.");
             Console.WriteLine("To remove items from your list type '-' and number of the item.");
             Console.WriteLine("If you wish to stop adding items, type 'X' or 'x'.\n");
 
@@ -55,12 +49,12 @@ namespace OrderCreator.View
             {
                 input = Console.ReadLine();
 
-                if (input == "X" || input == "y") break;
+                if (input == "X" || input == "x") break;
 
                 try
                 {
                     number = int.Parse(input);
-                    if (number == 0) throw new Exception("There is no number at 0.");
+                    if (number == 0 || Math.Abs(number) > products.Count) throw new Exception("Inocrrect index.");
                 }
                 catch (Exception ex)
                 {
@@ -70,15 +64,29 @@ namespace OrderCreator.View
 
                 if (number < 0)
                 {
-                    newOrder.RemoveItem(products[-number - 1]);
-                    Console.WriteLine("Removed " + products[-number - 1].Name + " from the order.");
+                    var item = products[-number - 1];
+                    if (!newOrder.HasItem(item))
+                    {
+                        Console.WriteLine("No such item in the order.");
+                        continue;
+                    }
+                    newOrder.RemoveItem(item);
+                    Console.WriteLine("Removed " + item.Name + " from the order.");
                 }
                 else
                 {
-                    newOrder.AddItem(products[number - 1]);
-                    Console.WriteLine("Removed " + products[number - 1].Name + " to the order.");
+                    var item = products[number - 1];
+                    newOrder.AddItem(item);
+                    Console.WriteLine("Added " + item.Name + " to the order.");
                 }
 
+            }
+
+            if (newOrder.Items.Count <= 0)
+            {
+                Console.WriteLine("Empty orders are not permitted. Press any key to return to the menu...");
+                Console.ReadKey();
+                returnToMenu();
             }
 
             Console.Clear();
@@ -87,7 +95,7 @@ namespace OrderCreator.View
             Console.WriteLine("Complete!\n");
 
             Console.WriteLine(newOrder.Name + " | " + newOrder.Id.ToString());
-            Console.WriteLine("Net sum: " + newOrder.Sum.ToString() + "PLN");
+            Console.WriteLine("Sum: " + newOrder.Sum.ToString() + "PLN");
 
             Console.WriteLine("Items: ");
             foreach (Product product in newOrder.Items)
@@ -95,7 +103,7 @@ namespace OrderCreator.View
                 Console.WriteLine("\t" + product.Name + " - " + String.Format("{0:0.00}", product.Price) + "PLN");
             }
             Console.WriteLine("\nApplied discounts:");
-            foreach(ISpecialOffer discount in newOrder.AppliedDiscounts)
+            foreach (ISpecialOffer discount in newOrder.AppliedDiscounts)
             {
                 Console.WriteLine("\t" + discount.Description);
             }
@@ -103,17 +111,20 @@ namespace OrderCreator.View
             bool continueLoop = true;
             while (continueLoop)
             {
-                Console.WriteLine("Do you wish to send this order? (Y/N)");
+                Console.WriteLine("\nDo you wish to send this order? (Y/N)");
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.Y:
+                        newOrder.SetNewSavedDate();
                         saveOrder(newOrder);
-                        Console.WriteLine("Order sent successfully. Press any key to continue...");
+                        Console.WriteLine("\nOrder sent successfully. Press any key to continue...");
                         Console.ReadKey();
                         continueLoop = false;
                         break;
 
-                    case ConsoleKey.N: break;
+                    case ConsoleKey.N:
+                        continueLoop = false;
+                        break;
 
                     default: continue;
                 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OrderCreator.View
+﻿namespace OrderCreator.View
 {
     internal class MenuView
     {
@@ -16,8 +10,8 @@ namespace OrderCreator.View
             Action onNewOrder,
             Action onShowHistory,
             Action onExit
-        ) 
-        { 
+        )
+        {
             goToOrderCreator = onNewOrder;
             goToOrderHistory = onShowHistory;
             exitApp = onExit;

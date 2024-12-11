@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OrderCreator.Service
+﻿namespace OrderCreator.Service
 {
     internal enum SpecialOfferType
     {
@@ -12,4 +6,3 @@ namespace OrderCreator.Service
         NON_STACKABLE
     }
 }
-   

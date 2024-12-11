@@ -1,11 +1,6 @@
 ﻿using OrderCreator.Model;
 using OrderCreator.Service;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderCreator.View
 {
@@ -22,19 +17,20 @@ namespace OrderCreator.View
 
         public void DrawOrderHistory()
         {
+            Console.Clear();
             Console.WriteLine("Fetching order history...");
             ReadOnlyCollection<Order> orders = getPreviousOrders();
             Console.WriteLine("Complete!\n");
 
             foreach (Order order in orders)
             {
-                Console.WriteLine("========================\n");
+                Console.WriteLine("========================");
                 Console.WriteLine(order.Name + " | " + order.Id.ToString());
-                Console.WriteLine("Sent on: " + order.Created.ToShortDateString());
-                Console.WriteLine("Net sum: " + order.Sum.ToString() + "PLN");
+                Console.WriteLine("Sent on: " + order.Created.ToString());
+                Console.WriteLine("Sum: " + String.Format("{0:0.00}", order.Sum) + "PLN");
 
                 Console.WriteLine("Items: ");
-                foreach(Product product in order.Items)
+                foreach (Product product in order.Items)
                 {
                     Console.WriteLine("\t" + product.Name + " - " + String.Format("{0:0.00}", product.Price) + "PLN");
                 }
@@ -43,9 +39,10 @@ namespace OrderCreator.View
                 {
                     Console.WriteLine("\t" + discount.Description);
                 }
+                Console.Write("\n");
             }
 
-            Console.WriteLine("\nTo return press Enter...");
+            Console.WriteLine("\nPress any key to return...");
             Console.ReadKey();
             returnToMenu();
         }

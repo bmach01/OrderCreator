@@ -1,10 +1,5 @@
 ﻿using OrderCreator.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderCreator.DAL
 {
@@ -12,8 +7,9 @@ namespace OrderCreator.DAL
     {
         private readonly List<Product> _availableProducts;
 
-        public ProductRepository() 
+        public ProductRepository()
         {
+            // Prop products
             _availableProducts = new List<Product>
             {
                 new Product("Laptop", 2500),

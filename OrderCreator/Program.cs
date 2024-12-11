@@ -1,6 +1,6 @@
 ﻿using OrderCreator.DAL;
-using OrderCreator.Model;
 using OrderCreator.View;
+using OrderCreator.ViewModel;
 
 namespace OrderCreator
 {
@@ -8,6 +8,14 @@ namespace OrderCreator
     {
         static void Main(string[] args)
         {
+            UniversalViewModel vm = new UniversalViewModel(
+                orderRepository: new OrderRepository(),
+                productRepository: new ProductRepository()
+            );
+
+            ConsoleView consoleView = new ConsoleView(vm);
+
+            consoleView.StartUI();
         }
     }
 }

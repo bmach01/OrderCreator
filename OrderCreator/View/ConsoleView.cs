@@ -1,10 +1,4 @@
-﻿using OrderCreator.Model;
-using OrderCreator.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OrderCreator.ViewModel;
 
 namespace OrderCreator.View
 {
@@ -20,22 +14,22 @@ namespace OrderCreator.View
         {
             _viewModel = viewModel;
 
+            _menu = new MenuView(
+                onNewOrder: () => _createOrder.DrawCreateOrder(),
+                onShowHistory: () => _showHistory.DrawOrderHistory(),
+                onExit: this.onExit
+            );
+
             _showHistory = new ShowHistoryView(
-                onReturn: _menu.DrawMenu, 
+                onReturn: () => _menu.DrawMenu(),
                 getHistory: _viewModel.GetHistory
             );
 
             _createOrder = new CreateOrderView(
-                onReturn:_menu.DrawMenu, 
-                getProducts: _viewModel.GetProducts, 
+                onReturn: () => _menu.DrawMenu(),
+                getProducts: _viewModel.GetProducts,
                 saveOrder: _viewModel.SaveOrder,
                 applyDiscounts: _viewModel.ApplyDiscounts
-            );
-
-            _menu = new MenuView(
-                onNewOrder: _createOrder.DrawCreateOrder,
-                onShowHistory: _showHistory.DrawOrderHistory,
-                onExit: this.onExit
             );
         }
 
@@ -49,6 +43,6 @@ namespace OrderCreator.View
             _menu.DrawMenu();
         }
 
-        
+
     }
 }
