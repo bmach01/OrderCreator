@@ -12,7 +12,7 @@ namespace OrderCreator.Model
         public Guid Id { get; }
         public string Name { get; set; }
         public DateTime Created { get; }
-        public List<OrderItem> Items { get; private set; }
+        public List<Product> Items { get; private set; }
         public List<ISpecialOffer> AppliedDiscounts { get; private set; }
         public double Sum { get; private set; }
 
@@ -21,7 +21,7 @@ namespace OrderCreator.Model
             Id = Guid.NewGuid();
             Created = DateTime.Now;
             Name = "Order_" + Id.ToString();
-            Items = new List<OrderItem> { };
+            Items = new List<Product> { };
             AppliedDiscounts= new List<ISpecialOffer>();
             Sum = 0;
         }
@@ -31,7 +31,7 @@ namespace OrderCreator.Model
             Name = name;
         }
 
-        public Order(Guid id, string name, DateTime created, List<OrderItem> items, List<ISpecialOffer> appliedDiscounts, double sum)
+        public Order(Guid id, string name, DateTime created, List<Product> items, List<ISpecialOffer> appliedDiscounts, double sum)
         {
             Id = id;
             Name = name;
@@ -41,13 +41,13 @@ namespace OrderCreator.Model
             Sum = sum;
         }
 
-        public void AddItem(OrderItem item)
+        public void AddItem(Product item)
         {
             Items.Add(item);
             Sum += item.Price;
         }
 
-        public void RemoveItem(OrderItem item)
+        public void RemoveItem(Product item)
         {
             if (Items.Remove(item))
                 Sum -= item.Price;

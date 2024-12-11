@@ -1,4 +1,5 @@
 ﻿using OrderCreator.Model;
+using OrderCreator.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,45 @@ namespace OrderCreator.View
 {
     internal class ConsoleView
     {
-        public ConsoleView() { }
+        private readonly MenuView _menu;
+        private readonly ShowHistoryView _showHistory;
+        private readonly CreateOrderView _createOrder;
 
-        public void WriteMenu() 
-        { 
-        }
-        public void WriteProducts(List<Product> products) 
+        private readonly UniversalViewModel _viewModel;
+
+        public ConsoleView(UniversalViewModel viewModel)
         {
-        }
-        public void WriteOrder(Order order) 
-        {
+            _viewModel = viewModel;
+
+            _showHistory = new ShowHistoryView(
+                onReturn: _menu.DrawMenu, 
+                getHistory: _viewModel.GetHistory
+            );
+
+            _createOrder = new CreateOrderView(
+                onReturn:_menu.DrawMenu, 
+                getProducts: _viewModel.GetProducts, 
+                saveOrder: _viewModel.SaveOrder,
+                applyDiscounts: _viewModel.ApplyDiscounts
+            );
+
+            _menu = new MenuView(
+                onNewOrder: _createOrder.DrawCreateOrder,
+                onShowHistory: _showHistory.DrawOrderHistory,
+                onExit: this.onExit
+            );
         }
 
+        private void onExit()
+        {
+            Environment.Exit(0);
+        }
+
+        public void StartUI()
+        {
+            _menu.DrawMenu();
+        }
+
+        
     }
 }

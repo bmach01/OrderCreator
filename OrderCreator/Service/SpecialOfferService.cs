@@ -16,7 +16,7 @@ namespace OrderCreator.Service
             _specialOffers = new LinkedList<ISpecialOffer>();
         }
 
-        public SpecialOfferService(List<ISpecialOffer> specialOffers)
+        public SpecialOfferService(LinkedList<ISpecialOffer> specialOffers)
         {
             _specialOffers = specialOffers;
         }
@@ -29,12 +29,17 @@ namespace OrderCreator.Service
            
         }
 
+        public void AppendSpecialOfffer(ISpecialOffer specialOffer) 
+        {
+            _specialOffers.AddLast(specialOffer);
+        }
+
         public void RemoveSpecialOffer(ISpecialOffer specialOffer) 
         {
             _specialOffers.Remove(specialOffer);
         }
 
-        public void ApplyAllDiscounts(ref Order order)
+        public ref Order ApplyAllDiscounts(ref Order order)
         {
             bool appliedNonStackDiscount = false;
 
@@ -56,6 +61,8 @@ namespace OrderCreator.Service
                     }
                 }
             }
+
+            return ref order;
         }
     }
 }
