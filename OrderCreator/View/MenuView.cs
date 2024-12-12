@@ -27,7 +27,7 @@
                 "H> Show history of the order\n" +
                 "X> Exit\n" +
 
-                "\nEnter the instruction character (e.g. X> - enter 'x' or 'X') to maneuver the program.\n"
+                "\nPress the instruction character (e.g. X> - enter 'X') to maneuver the program.\n"
             );
 
             while (true)

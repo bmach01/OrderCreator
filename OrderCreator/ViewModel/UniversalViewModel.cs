@@ -9,13 +9,16 @@ namespace OrderCreator.ViewModel
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ISpecialOfferRepository _specialOfferRepository;
         private readonly SpecialOfferService _specialOfferService;
 
-        public UniversalViewModel(IOrderRepository orderRepository, IProductRepository productRepository)
+        public UniversalViewModel(IOrderRepository orderRepository, IProductRepository productRepository, ISpecialOfferRepository specialOfferRepository)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
-            _specialOfferService = new SpecialOfferService();
+            _specialOfferRepository = specialOfferRepository;
+
+            _specialOfferService = new SpecialOfferService(new LinkedList<ISpecialOffer>(_specialOfferRepository.GetAvailableSpecialOffers()));
         }
 
         public ReadOnlyCollection<Order> GetHistory()
@@ -36,6 +39,11 @@ namespace OrderCreator.ViewModel
         public Order ApplyDiscounts(Order order)
         {
             return _specialOfferService.ApplyAllDiscounts(ref order);
+        }
+
+        public ReadOnlyCollection<ISpecialOffer> GetAllSpecialOffers()
+        {
+            return new ReadOnlyCollection<ISpecialOffer>(new List<ISpecialOffer>(_specialOfferService.SpecialOffers));
         }
     }
 }

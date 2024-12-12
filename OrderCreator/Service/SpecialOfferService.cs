@@ -4,53 +4,53 @@ namespace OrderCreator.Service
 {
     internal class SpecialOfferService
     {
-        private LinkedList<ISpecialOffer> _specialOffers;
+        public LinkedList<ISpecialOffer> SpecialOffers { get; private set; }
 
         public SpecialOfferService()
         {
-            _specialOffers = new LinkedList<ISpecialOffer>();
+            SpecialOffers = new LinkedList<ISpecialOffer>();
         }
 
         public SpecialOfferService(LinkedList<ISpecialOffer> specialOffers)
         {
-            _specialOffers = specialOffers;
+            SpecialOffers = specialOffers;
         }
 
         public void AddSpecialOffer(ISpecialOffer specialOffer, ISpecialOffer before)
         {
             // Order matters
-            var node = _specialOffers.Find(before);
-            _specialOffers.AddBefore(node, specialOffer);
+            var node = SpecialOffers.Find(before);
+            SpecialOffers.AddBefore(node, specialOffer);
 
         }
 
         public void AppendSpecialOfffer(ISpecialOffer specialOffer)
         {
-            _specialOffers.AddLast(specialOffer);
+            SpecialOffers.AddLast(specialOffer);
         }
 
         public void RemoveSpecialOffer(ISpecialOffer specialOffer)
         {
-            _specialOffers.Remove(specialOffer);
+            SpecialOffers.Remove(specialOffer);
         }
 
         public ref Order ApplyAllDiscounts(ref Order order)
         {
             bool appliedNonStackDiscount = false;
 
-            foreach (var offer in _specialOffers)
+            foreach (var offer in SpecialOffers)
             {
                 // Skip non-stackable discounts if one has already been applied
-                if (appliedNonStackDiscount && offer.type == SpecialOfferType.NON_STACKABLE)
+                if (appliedNonStackDiscount && offer.Type == SpecialOfferType.NON_STACKABLE)
                 {
                     continue;
                 }
 
                 if (offer.IsValid(order))
                 {
-                    order.ApplyDiscount(offer.ApplyDiscount);
+                    order.ApplyDiscount(offer);
 
-                    if (offer.type == SpecialOfferType.NON_STACKABLE)
+                    if (offer.Type == SpecialOfferType.NON_STACKABLE)
                     {
                         appliedNonStackDiscount = true;
                     }

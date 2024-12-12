@@ -29,7 +29,8 @@ namespace OrderCreator.View
                 onReturn: () => _menu.DrawMenu(),
                 getProducts: _viewModel.GetProducts,
                 saveOrder: _viewModel.SaveOrder,
-                applyDiscounts: _viewModel.ApplyDiscounts
+                applyDiscounts: _viewModel.ApplyDiscounts,
+                getAllDiscounts: _viewModel.GetAllSpecialOffers
             );
         }
 

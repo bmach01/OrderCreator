@@ -1,5 +1,4 @@
 ﻿using OrderCreator.Model;
-using OrderCreator.Service;
 using System.Collections.ObjectModel;
 
 namespace OrderCreator.View
@@ -28,6 +27,7 @@ namespace OrderCreator.View
                 Console.WriteLine(order.Name + " | " + order.Id.ToString());
                 Console.WriteLine("Sent on: " + order.Created.ToString());
                 Console.WriteLine("Sum: " + String.Format("{0:0.00}", order.Sum) + "PLN");
+                Console.WriteLine("Sum after discounts: " + String.Format("{0:0.00}", order.DiscountedSum) + "PLN");
 
                 Console.WriteLine("Items: ");
                 foreach (Product product in order.Items)

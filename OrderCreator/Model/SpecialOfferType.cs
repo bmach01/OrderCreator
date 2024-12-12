@@ -1,4 +1,4 @@
-﻿namespace OrderCreator.Service
+﻿namespace OrderCreator.Model
 {
     internal enum SpecialOfferType
     {

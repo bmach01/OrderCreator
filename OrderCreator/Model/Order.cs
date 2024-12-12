@@ -1,5 +1,4 @@
-﻿using OrderCreator.Service;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace OrderCreator.Model
 {
@@ -11,6 +10,7 @@ namespace OrderCreator.Model
         public List<Product> Items { get; private set; } // Map should also be considered, especially for large orders
         public List<ISpecialOffer> AppliedDiscounts { get; private set; }
         public double Sum { get; private set; }
+        public double DiscountedSum { get; private set; }
 
         public Order()
         {
@@ -20,6 +20,8 @@ namespace OrderCreator.Model
             Items = new List<Product> { };
             AppliedDiscounts = new List<ISpecialOffer>();
             Sum = 0;
+            DiscountedSum = 0;
+
         }
 
         public Order(String name) : this()
@@ -28,7 +30,7 @@ namespace OrderCreator.Model
         }
 
         [JsonConstructor]
-        public Order(Guid id, string name, DateTime created, List<Product> items, List<ISpecialOffer> appliedDiscounts, double sum)
+        public Order(Guid id, string name, DateTime created, List<Product> items, List<ISpecialOffer> appliedDiscounts, double sum, double discountedSum)
         {
             Id = id;
             Name = name;
@@ -36,29 +38,36 @@ namespace OrderCreator.Model
             Items = items;
             AppliedDiscounts = appliedDiscounts;
             Sum = sum;
+            DiscountedSum = discountedSum;
         }
 
         public void AddItem(Product item)
         {
             Items.Add(item);
             Sum += item.Price;
+            DiscountedSum = Sum;
         }
 
         public void RemoveItem(Product item)
         {
             if (Items.Remove(item))
+            {
                 Sum -= item.Price;
+                DiscountedSum = Sum;
+            }
         }
 
         public void RemoveItem(int index)
         {
             Sum -= Items[index].Price;
+            DiscountedSum = Sum;
             Items.RemoveAt(index);
         }
 
-        public void ApplyDiscount(Func<Order, double> discount)
+        public void ApplyDiscount(ISpecialOffer specialOffer)
         {
-            Sum = discount(this);
+            DiscountedSum = specialOffer.ApplyDiscount(this);
+            AppliedDiscounts.Add(specialOffer);
         }
 
         public bool HasItem(Product item)

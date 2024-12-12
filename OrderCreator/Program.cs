@@ -10,7 +10,8 @@ namespace OrderCreator
         {
             UniversalViewModel vm = new UniversalViewModel(
                 orderRepository: new OrderRepository(),
-                productRepository: new ProductRepository()
+                productRepository: new ProductRepository(),
+                specialOfferRepository: new SpecialOfferRepository()
             );
 
             ConsoleView consoleView = new ConsoleView(vm);

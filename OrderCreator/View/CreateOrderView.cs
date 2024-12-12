@@ -1,5 +1,4 @@
 ﻿using OrderCreator.Model;
-using OrderCreator.Service;
 using System.Collections.ObjectModel;
 
 namespace OrderCreator.View
@@ -10,13 +9,21 @@ namespace OrderCreator.View
         private readonly Action<Order> saveOrder;
         private readonly Func<ReadOnlyCollection<Product>> getProducts;
         private readonly Func<Order, Order> applyDiscounts;
+        private readonly Func<ReadOnlyCollection<ISpecialOffer>> getAllSpecialOffers;
 
-        public CreateOrderView(Action onReturn, Action<Order> saveOrder, Func<ReadOnlyCollection<Product>> getProducts, Func<Order, Order> applyDiscounts)
+        public CreateOrderView(
+            Action onReturn, 
+            Action<Order> saveOrder, 
+            Func<ReadOnlyCollection<Product>> getProducts, 
+            Func<Order, Order> applyDiscounts,
+            Func<ReadOnlyCollection<ISpecialOffer>> getAllDiscounts
+        )
         {
             this.returnToMenu = onReturn;
             this.saveOrder = saveOrder;
             this.getProducts = getProducts;
             this.applyDiscounts = applyDiscounts;
+            this.getAllSpecialOffers = getAllDiscounts;
         }
 
         public void DrawCreateOrder()
@@ -43,6 +50,14 @@ namespace OrderCreator.View
             }
             Console.WriteLine("\n\n");
 
+            Console.WriteLine("Available Special Offers:");
+            foreach (ISpecialOffer offer in getAllSpecialOffers())
+            {
+                Console.WriteLine(offer.Description);
+            }
+
+            Console.WriteLine("\n" + new string('=', 50));
+
             string? input = "";
             int number = 0;
             while (true)
@@ -56,7 +71,7 @@ namespace OrderCreator.View
                     number = int.Parse(input);
                     if (number == 0 || Math.Abs(number) > products.Count) throw new Exception("Inocrrect index.");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine("Please choose number from the list.");
                     continue;
@@ -90,12 +105,13 @@ namespace OrderCreator.View
             }
 
             Console.Clear();
-            Console.WriteLine("Checking for discounts...");
+            Console.WriteLine("Applying viable discounts...\n");
             newOrder = applyDiscounts(newOrder);
-            Console.WriteLine("Complete!\n");
 
+            Console.WriteLine("Your order:\n" + new string('-', newOrder.Id.ToString().Length * 2 + 10));
             Console.WriteLine(newOrder.Name + " | " + newOrder.Id.ToString());
-            Console.WriteLine("Sum: " + newOrder.Sum.ToString() + "PLN");
+            Console.WriteLine("Sum: " + String.Format("{0:0.00}", newOrder.Sum) + "PLN");
+            Console.WriteLine("Sum after discounts: " + String.Format("{0:0.00}", newOrder.DiscountedSum) + "PLN");
 
             Console.WriteLine("Items: ");
             foreach (Product product in newOrder.Items)
