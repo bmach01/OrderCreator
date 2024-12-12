@@ -20,13 +20,13 @@ namespace OrderCreator.Model
         }
 
         public SpecialOfferOnAll(
-            double minSum, 
-            double maxSum, 
-            int minCount, 
-            int maxCount, 
-            SpecialOfferType type, 
+            double minSum,
+            double maxSum,
+            int minCount,
+            int maxCount,
+            SpecialOfferType type,
             string description,
-            bool percentageValue, 
+            bool percentageValue,
             double discount
         )
         {
@@ -50,8 +50,6 @@ namespace OrderCreator.Model
 
         public bool IsValid(Order order)
         {
-            Console.WriteLine(order.Sum + " <== order sum");
-
             if (order.Sum > _maxSum || order.Sum < _minSum) return false;
             if (order.Items.Count > _maxCount || order.Items.Count < _minCount) return false;
 
@@ -60,5 +58,5 @@ namespace OrderCreator.Model
 
     }
 
-        
+
 }

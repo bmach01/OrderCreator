@@ -6,12 +6,23 @@ namespace OrderCreator.DAL
 {
     internal class OrderRepository : IOrderRepository
     {
-        private static readonly string _dbPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OrderCreatorDBProp.txt"
-        );
+        private readonly string _dbPath;
 
         public OrderRepository()
         {
+            _dbPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OrderCreatorDBProp.txt"
+            );
+
+            if (!File.Exists(_dbPath))
+            {
+                using (File.Create(_dbPath)) { }
+            }
+        }
+
+        public OrderRepository(string dbPath)
+        {
+            _dbPath = dbPath;
             if (!File.Exists(_dbPath))
             {
                 using (File.Create(_dbPath)) { }

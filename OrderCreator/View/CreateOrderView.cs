@@ -12,9 +12,9 @@ namespace OrderCreator.View
         private readonly Func<ReadOnlyCollection<ISpecialOffer>> getAllSpecialOffers;
 
         public CreateOrderView(
-            Action onReturn, 
-            Action<Order> saveOrder, 
-            Func<ReadOnlyCollection<Product>> getProducts, 
+            Action onReturn,
+            Action<Order> saveOrder,
+            Func<ReadOnlyCollection<Product>> getProducts,
             Func<Order, Order> applyDiscounts,
             Func<ReadOnlyCollection<ISpecialOffer>> getAllDiscounts
         )

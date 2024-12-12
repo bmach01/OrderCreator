@@ -20,11 +20,11 @@ namespace OrderCreator.Model
         }
 
         public SpecialOfferOnItems(
-            double minSum, 
-            double maxSum, 
-            int minCount, 
-            int maxCount, 
-            SpecialOfferType type, 
+            double minSum,
+            double maxSum,
+            int minCount,
+            int maxCount,
+            SpecialOfferType type,
             double discount,
             ItemValue onItem,
             string description
@@ -45,7 +45,7 @@ namespace OrderCreator.Model
             Product? item;
 
             if (_onItem == ItemValue.MOST_EXPENSIVE_ITEM)
-                item = order.Items.MaxBy(it => it.Price);    
+                item = order.Items.MaxBy(it => it.Price);
             else
                 item = order.Items.MinBy(it => it.Price);
 
